@@ -9,7 +9,7 @@ spec:
   rules:
     # --- این خط را تغییر دهید ---
     # ما از sslip.io برای ساختن یک دامنه تستی استفاده می‌کنیم
-    - host: "http://team.looparc.ir"
+    - host: "https://team.looparc.ir"
     # ---
       http:
         paths:
