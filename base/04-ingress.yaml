@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: team-app-ingress
+  namespace: team-app
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  rules:
+    # --- این خط را تغییر دهید ---
+    # ما از sslip.io برای ساختن یک دامنه تستی استفاده می‌کنیم
+    - host: "team-app.89.42.199.129.sslip.io"
+    # ---
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-svc
+                port:
+                  number: 80
