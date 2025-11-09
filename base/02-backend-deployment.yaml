@@ -4,13 +4,6 @@ metadata:
   name: backend-deployment
   namespace: team-app
   
-  # --- این بلاک "annotations" گمشده بود و اضافه شد ---
-  annotations:
-    # ۱. به ربات می‌گوییم کدام ایمیج را تماشا کند
-    argocd-image-updater.argoproj.io/image-list: backend=ghcr.io/hjali7/team-app-backend
-    # ۲. می‌گوییم از استراتژی "digest" (آپدیت مستقیم) استفاده کند
-    argocd-image-updater.argoproj.io/backend.strategy: digest
-  # ---
   
 spec:
   replicas: 1
