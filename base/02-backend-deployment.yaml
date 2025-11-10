@@ -16,7 +16,7 @@ spec:
       containers:
         - name: backend
           # ربات این خط را مستقیماً آپدیت خواهد کرد
-          image: "ghcr.io/hjali7/team-app-backend:80132507be6f733767a04d3f6ca6bdf5596b54a3"
+          image: "ghcr.io/hjali7/team-app-backend:11874f9ffd73a77f9e798f61f612f994a3820c2f"
           ports:
             - containerPort: 8080
           envFrom:
@@ -37,21 +37,3 @@ spec:
               port: 8080
             initialDelaySeconds: 5
             periodSeconds: 10
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend-svc
-  namespace: team-app
-spec:
-  selector:
-    app: backend
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8080
-  type: ClusterIP
-  template:
-    spec:
-      containers:
-        - image: "ghcr.io/hjali7/team-app-backend:80132507be6f733767a04d3f6ca6bdf5596b54a3"
