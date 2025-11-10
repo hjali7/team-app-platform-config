@@ -3,8 +3,6 @@ kind: Deployment
 metadata:
   name: frontend-deployment
   namespace: team-app
-  
-  
 spec:
   replicas: 1
   selector:
@@ -18,21 +16,6 @@ spec:
       containers:
         - name: frontend
           # ربات این خط را مستقیماً آپدیت خواهد کرد
-          image: ghcr.io/hjali7/team-app-ui:latest
-          
+          image: "ghcr.io/hjali7/team-app-ui:913df50b6c3184bde49562ec83f8041812b9c7f9"
           ports:
             - containerPort: 3000
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: frontend-svc
-  namespace: team-app
-spec:
-  selector:
-    app: frontend
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 3000
-  type: ClusterIP
