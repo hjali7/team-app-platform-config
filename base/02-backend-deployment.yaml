@@ -16,7 +16,7 @@ spec:
       containers:
         - name: backend
           # ربات این خط را مستقیماً آپدیت خواهد کرد
-          image: ""
+          image: "ghcr.io/hjali7/team-app-backend:3a8149f3bf6aa9236804af57a78a467b96bfcf6c"
           ports:
             - containerPort: 8080
           envFrom:
@@ -54,4 +54,4 @@ spec:
   template:
     spec:
       containers:
-        - image: ""
+        - image: "ghcr.io/hjali7/team-app-backend:3a8149f3bf6aa9236804af57a78a467b96bfcf6c"
