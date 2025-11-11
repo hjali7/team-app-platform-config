@@ -1,37 +1,33 @@
-# base/06-ingress.yaml
+# base/04-ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: team-app-ingress
   namespace: team-app
-  annotations:
-    # این به Traefik می‌گوید که مسیر /api را قبل از ارسال به بک‌اند حذف کند
-    # /api/users -> /users
-    traefik.ingress.kubernetes.io/router.strip-prefix: "true"
 spec:
-  # این بخش بسیار مهم است و به K3s می‌گوید از Traefik استفاده کند
+  # این خط مهم است و به K3s می‌گوید که از Traefik استفاده کند
   ingressClassName: traefik
   rules:
-  # ما اینجا از نام هاست (domain name) استفاده نمی‌کنیم، 
-  # پس قوانین مستقیماً روی IP سرور اعمال می‌شوند.
-  - http:
-      paths:
-        # قانون ۱: هر درخواستی که با /api شروع می‌شود
-        - path: /api
-          pathType: Prefix
-          backend:
-            service:
-              # به سرویس بک‌اند بفرست
-              name: backend-svc
-              port:
-                number: 80 # (این پورتِ Service بک‌اند است، نه targetPort)
+    - host: "team.looparc.ir"
+      http:
+        paths:
+          # قانون ۱: ترافیک بک‌اند
+          # این قانون *باید* قبل از قانون ریشه (/) بیاید
+          # تمام درخواست‌ها به team.looparc.ir/api/...
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-svc # <-- به سرویس بک‌اند می‌رود
+                port:
+                  number: 80 # (پورت سرویس بک‌اند)
 
-        # قانون ۲: هر درخواست دیگری (مسیر ریشه)
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              # به سرویس فرانت‌اند بفرست
-              name: frontend-svc
-              port:
-                number: 80 # (این پورتِ Service فرانت‌اند است)
+          # قانون ۲: ترافیک فرانت‌اند (قانون پیش‌فرض)
+          # تمام درخواست‌های دیگر به team.looparc.ir/
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-svc # <-- به سرویس فرانت‌اند می‌رود
+                port:
+                  number: 80 # (پورت سرویس فرانت‌اند)
