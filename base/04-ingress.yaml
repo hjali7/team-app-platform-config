@@ -1,22 +1,37 @@
+# base/06-ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: team-app-ingress
   namespace: team-app
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
+    # این به Traefik می‌گوید که مسیر /api را قبل از ارسال به بک‌اند حذف کند
+    # /api/users -> /users
+    traefik.ingress.kubernetes.io/router.strip-prefix: "true"
 spec:
+  # این بخش بسیار مهم است و به K3s می‌گوید از Traefik استفاده کند
+  ingressClassName: traefik
   rules:
-    # --- این خط را تغییر دهید ---
-    # ما از sslip.io برای ساختن یک دامنه تستی استفاده می‌کنیم
-    - host: "team.looparc.ir"
-    # ---
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: frontend-svc
-                port:
-                  number: 80
+  # ما اینجا از نام هاست (domain name) استفاده نمی‌کنیم، 
+  # پس قوانین مستقیماً روی IP سرور اعمال می‌شوند.
+  - http:
+      paths:
+        # قانون ۱: هر درخواستی که با /api شروع می‌شود
+        - path: /api
+          pathType: Prefix
+          backend:
+            service:
+              # به سرویس بک‌اند بفرست
+              name: backend-svc
+              port:
+                number: 80 # (این پورتِ Service بک‌اند است، نه targetPort)
+
+        # قانون ۲: هر درخواست دیگری (مسیر ریشه)
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              # به سرویس فرانت‌اند بفرست
+              name: frontend-svc
+              port:
+                number: 80 # (این پورتِ Service فرانت‌اند است)
