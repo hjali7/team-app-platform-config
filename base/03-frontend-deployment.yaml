@@ -16,6 +16,6 @@ spec:
       containers:
         - name: frontend
           # ربات این خط را مستقیماً آپدیت خواهد کرد
-          image: "ghcr.io/hjali7/team-app-ui:c96351559ddb115373659a2b64a54f4aa3e65bf4"
+          image: "ghcr.io/hjali7/team-app-ui:17e74973ba5833541614d857f06e6300c6d56d77"
           ports:
             - containerPort: 3000
